@@ -16,6 +16,10 @@ def connect_to_db():
     CONN = sqlite3.connect("hackbright.db")
     DB = CONN.cursor()
 
+def make_new_student(first_name, last_name, github):
+    query = """INSERT into Students values (?,?,?)"""
+    DB.execute(query, (first_name, last_name, github))
+
 def main():
     connect_to_db()
     command = None
@@ -29,6 +33,7 @@ def main():
             get_student_by_github(*args) 
         elif command == "new_student":
             make_new_student(*args)
+        
 
     CONN.close()
 
