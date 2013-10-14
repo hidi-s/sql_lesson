@@ -7,9 +7,7 @@ def get_student_by_github(github):
     query = """SELECT first_name, last_name, github FROM Students WHERE github = ?"""
     DB.execute(query, (github,))
     row = DB.fetchone()
-    print """\
-Student: %s %s
-Github account: %s"""%(row[0], row[1], row[2])
+    return row
 
 def connect_to_db():
     global DB, CONN
@@ -29,9 +27,9 @@ def get_project_title(project_title):
     print """\
 Title: %s, Description: %s, Max Grade: %s"""%(row[0], row[1], row[2])
 
-def new_project(title, description, max_grade):
+def new_project(title, max_grade, description):
     query = """INSERT into Projects values (?, ?, ?)"""
-    DB.execute(query, (title, description, max_grade,))
+    DB.execute(query, (title, max_grade, description,))
     CONN.commit()
     print "Successfully added project: %s"%title
 
@@ -68,7 +66,18 @@ def main():
         input_string = raw_input("HBA Database> ")
         tokens = input_string.split()
         command = tokens[0]
-        args = tokens[1:]
+        if command == "new_project":
+            if len(tokens)>3:
+                desc = ""
+                for word in tokens[3:]:
+                    desc += word + " "
+                tokens[3] = desc
+                print tokens[3]
+                del tokens[4:]    
+            args = tokens[1:]
+            new_project(*args)
+        else: 
+            args = tokens[1:]
 
         if command == "student_by_github":
             get_student_by_github(*args) 
@@ -76,8 +85,6 @@ def main():
             make_new_student(*args)
         elif command == "get_project_title":
             get_project_title(*args)
-        elif command == "new_project":
-            new_project(*args)
         elif command == "get_grade":
             get_grade(*args)
         elif command == "record_grade":
