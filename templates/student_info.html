@@ -2,6 +2,15 @@
     <body>
         <h1> Student: {{first_name}} {{last_name}} </h1>
         <h2>Github account: {{github}}</h2>
-        <p>This student is awesome.</p>
+        <table>
+                <th> Project Name </th>
+                <th> Grade </th>
+            {% for key, value in grade.iteritems() %}
+               <tr>
+                    <a href="www.google.com"> <td> {{ key }} </td> </a>
+                    <td> {{ value }} </td>
+               </tr>
+            {% endfor %}
+        </table>
     </body>
 </html>

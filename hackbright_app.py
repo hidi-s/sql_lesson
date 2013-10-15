@@ -26,6 +26,25 @@ def get_project_title(project_title):
     row = DB.fetchone()
     print """\
 Title: %s, Description: %s, Max Grade: %s"""%(row[0], row[1], row[2])
+    # return row
+
+def get_all_grades_project(project_title):
+    query = """SELECT first_name, last_name, grade FROM Grades2 INNER JOIN Students ON Grades2.student_github=Students.github WHERE Grades2.project_title = ?"""
+    DB.execute(query, (project_title,))
+    all_info = DB.fetchall()
+    counter = 0
+    dictionary = {}
+    length = len(all_info)
+    
+    while counter in range(0, length):
+        first_name = all_info[counter][0]
+        last_name = all_info[counter][1]
+        name = first_name + " " + last_name
+        grade = all_info[counter][2]
+        dictionary[name] = grade
+        counter += 1
+    return dictionary
+
 
 def new_project(title, max_grade, description):
     query = """INSERT into Projects values (?, ?, ?)"""
@@ -52,12 +71,20 @@ def record_grade(first_name, last_name, project_title, grade):
     
 def show_all_grades(first_name, last_name):
     query = """SELECT github FROM Students WHERE first_name = ? AND last_name = ?"""
-    query2 = """SELECT grade FROM Grades2 WHERE student_github = ?"""
+    query2 = """SELECT project_title, grade FROM Grades2 WHERE student_github = ?"""
     DB.execute(query, (first_name, last_name,))
     github = DB.fetchone()
     DB.execute(query2, (github[0],))
     grades = DB.fetchall()
-    print "%s %s grades: %s"%(first_name, last_name, grades[0:])
+    counter = 0
+    all_grades = {}
+    length = len(grades)
+    while counter in range(0, length):
+        project_name = grades[counter][0]
+        project_grade = grades[counter][1]
+        all_grades[project_name] = project_grade
+        counter += 1
+    return all_grades
 
 def main():
     connect_to_db()
@@ -91,6 +118,8 @@ def main():
             record_grade(*args)
         elif command == "show_all_grades":
             show_all_grades(*args)
+        elif command == "get_all_grades_project":
+            get_all_grades_project(*args)
 
     CONN.close()
 
