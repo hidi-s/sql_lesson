@@ -2,12 +2,15 @@
     <body>
         <h1>Project Name: {{title}} </h1>
         <table>
+                
                 <th> Name </th>
+                <th> Github </th>
                 <th> Grade </th>
             {% for key, value in dictionary2.iteritems() %}
                <tr>
                     <td> {{ key }} </td>
-                    <td> {{ value }} </td>
+                    <td><a href = "/student?student={{value[0]}}"> {{ value[0] }}</a></td>
+                    <td> {{value[1]}} </td>
                </tr>
             {% endfor %}
         </table>

@@ -9,6 +9,12 @@ def get_student_by_github(github):
     row = DB.fetchone()
     return row
 
+def get_student_github(first_name, last_name):
+    query = """SELECT github FROM Students WHERE first_name = ? AND last_name = ?"""
+    DB.execute(query, (first_name,last_name,))
+    row = DB.fetchone()
+    return row 
+
 def connect_to_db():
     global DB, CONN
     CONN = sqlite3.connect("hackbright.db")
@@ -29,7 +35,7 @@ Title: %s, Description: %s, Max Grade: %s"""%(row[0], row[1], row[2])
     # return row
 
 def get_all_grades_project(project_title):
-    query = """SELECT first_name, last_name, grade FROM Grades2 INNER JOIN Students ON Grades2.student_github=Students.github WHERE Grades2.project_title = ?"""
+    query = """SELECT first_name, last_name, grade, student_github FROM Grades2 INNER JOIN Students ON Grades2.student_github=Students.github WHERE Grades2.project_title = ?"""
     DB.execute(query, (project_title,))
     all_info = DB.fetchall()
     counter = 0
@@ -41,7 +47,8 @@ def get_all_grades_project(project_title):
         last_name = all_info[counter][1]
         name = first_name + " " + last_name
         grade = all_info[counter][2]
-        dictionary[name] = grade
+        github = all_info[counter][3]
+        dictionary[name] = [github, grade]
         counter += 1
     return dictionary
 
@@ -120,6 +127,8 @@ def main():
             show_all_grades(*args)
         elif command == "get_all_grades_project":
             get_all_grades_project(*args)
+        elif command == "get_student_github":
+            get_student_github(*args)
 
     CONN.close()
 

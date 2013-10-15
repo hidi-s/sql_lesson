@@ -23,5 +23,15 @@ def get_project():
     dictionary2 = hackbright_app.get_all_grades_project(project_title2)
     html = render_template("project_info.html", title = project_title2, dictionary2= dictionary2)
     return html
+
+
+@app.route("/new_student")
+def new_student():
+    return render_template("new_student.html")
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
+

@@ -1,16 +1,7 @@
-<html>
-    <body>
-        <h1> Student: {{first_name}} {{last_name}} </h1>
-        <h2>Github account: {{github}}</h2>
-        <table>
-                <th> Project Name </th>
-                <th> Grade </th>
-            {% for key, value in grade.iteritems() %}
-               <tr>
-                    <td><a href = "/project_title?project_title={{key}}"> {{ key }} </a></td>
-                    <td> {{ value }} </td>
-               </tr>
-            {% endfor %}
-        </table>
-    </body>
+<html>     <body>         <h1> Student: {{first_name}} {{last_name}} </h1>
+<h2>Github account: {{github}}</h2>         <table>                 <th>
+Project Name </th>                 <th> Grade </th>             {% for key,
+value in grade.iteritems() %}                <tr>                     <td><a
+href = "/project_title?project_title={{key}}"> {{ key }} </a></td> <td> {{
+value }} </td>                </tr>             {% endfor %} </table> </body>
 </html>
