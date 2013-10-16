@@ -27,9 +27,12 @@ def get_project():
 
 @app.route("/new_student")
 def new_student():
-    return render_template("new_student.html")
-
-
+    # hackbright_app.connect_to_db()
+    # github = request.form.get("student")
+    # first_name = request.form.get("first_name")
+    # last_name = request.form.get("last_name")
+    html = render_template("new_student.html")
+    return html
 
 
 if __name__ == "__main__":
